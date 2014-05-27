@@ -14,6 +14,12 @@ class Clean_SqlReports_Block_Adminhtml_Report_View extends Mage_Adminhtml_Block_
         parent::__construct();
         $this->_removeButton('add');
         $this->_removeButton('search');
+        
+        $this->_addButton('back', array(
+            'label'   => Mage::helper('core')->__('Back'),
+            'onclick' => "setLocation('" . Mage::getSingleton('adminhtml/url')->getUrl('*/*/'). "')",
+            'class'   => 'back'
+        ));
     }
 
     protected function _prepareLayout()
