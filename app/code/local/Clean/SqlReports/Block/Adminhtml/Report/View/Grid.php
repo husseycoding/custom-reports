@@ -55,25 +55,43 @@ class Clean_SqlReports_Block_Adminhtml_Report_View_Grid extends Mage_Adminhtml_B
     {
         $collection = $this->_createCollection();
         $collection->setPageSize(1);
-        $collection->load();
-
-        $items = $collection->getItems();
-        if (count($items)) {
-            $item = reset($items);
-            foreach ($item->getData() as $key => $val) {
-                $this->addColumn(
-                    $key,
-                    array(
-                        'header'   => Mage::helper('core')->__($key),
-                        'index'    => $key,
-                        'sortable' => true,
-                        'filter_condition_callback' => array($this, '_filterColumn')
-                    )
-                );
+        
+        try {
+            $collection->load();
+            $items = $collection->getItems();
+            if (count($items)) {
+                $item = reset($items);
+                foreach ($item->getData() as $key => $val) {
+                    $this->addColumn(
+                        $key,
+                        array(
+                            'header'   => Mage::helper('core')->__($key),
+                            'index'    => $key,
+                            'sortable' => true,
+                            'filter_condition_callback' => array($this, '_filterColumn')
+                        )
+                    );
+                }
             }
+            
+            return parent::_prepareColumns();
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError('Invalid database query!');
+            $url = Mage::getSingleton('adminhtml/url')->getUrl('*/*/');
+            Mage::app()->getFrontController()->getResponse()->setRedirect($url);
         }
+        
+        return false;
+    }
 
-        return parent::_prepareColumns();
+    protected function _prepareGrid()
+    {
+        if ($this->_prepareColumns()) {
+            $this->_prepareMassactionBlock();
+            $this->_prepareCollection();
+        }
+        
+        return $this;
     }
     
     protected function _filterColumn($collection, $column)
