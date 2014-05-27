@@ -66,13 +66,24 @@ class Clean_SqlReports_Block_Adminhtml_Report_View_Grid extends Mage_Adminhtml_B
                     array(
                         'header'   => Mage::helper('core')->__($key),
                         'index'    => $key,
-                        'filter'   => false,
                         'sortable' => true,
+                        'filter_condition_callback' => array($this, '_filterColumn')
                     )
                 );
             }
         }
 
         return parent::_prepareColumns();
+    }
+    
+    protected function _filterColumn($collection, $column)
+    {
+        if (!$value = $column->getFilter()->getValue()) {
+            return;
+        }
+        
+        $index = $column->getIndex();
+
+        $this->getCollection()->getSelect()->where($index . ' LIKE ?', '%' . $value . '%');
     }
 }
