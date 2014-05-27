@@ -13,6 +13,10 @@ class Clean_SqlReports_Block_Adminhtml_Report extends Mage_Adminhtml_Block_Widge
         $this->_addButtonLabel = Mage::helper('core')->__('Add Report');
 
         parent::__construct();
+        
+        if (!Mage::helper('cleansql')->getAllowEdit()):
+            $this->_removeButton('add');
+        endif;
     }
 
     protected function _prepareLayout()
