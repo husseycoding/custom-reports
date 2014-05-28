@@ -96,8 +96,12 @@ class Clean_SqlReports_Adminhtml_ReportController extends Mage_Adminhtml_Control
             $this->_forward('noroute');
             return;
         }
-
-        $fileName = strtolower(str_replace(' ', '_', $this->_getReport()->getTitle())) . '_' . time() . '.csv';
+        
+        $title = $this->_getReport()->getTitle();
+        $title = strtolower($title);
+        $title = preg_replace('/[^0-9a-z ]/', '', $title);
+        $title = preg_replace('/\s+/', '_', $title);
+        $fileName = $title . '_' . date('YmdHis') . '.csv';
 
         $this->_prepareDownloadResponse(
             $fileName,
