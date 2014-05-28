@@ -10,17 +10,8 @@ class Clean_SqlReports_Block_Adminhtml_Report_View_Grid extends Mage_Adminhtml_B
         $this->setId('reportsGrid');
         $this->setDefaultSort('report_id');
         $this->setDefaultDir('ASC');
-        $this->setSaveParametersInSession(true);
+        $this->setSaveParametersInSession(false);
         $this->addExportType('*/*/exportCsv', $this->__('CSV'));
-    }
-
-    protected function _prepareLayout()
-    {
-        parent::_prepareLayout();
-        $this->unsetChild('search_button');
-        $this->unsetChild('reset_filter_button');
-
-        return $this;
     }
 
     /**

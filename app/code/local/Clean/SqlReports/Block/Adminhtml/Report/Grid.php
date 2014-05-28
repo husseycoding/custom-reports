@@ -6,7 +6,7 @@ class Clean_SqlReports_Block_Adminhtml_Report_Grid extends Mage_Adminhtml_Block_
     {
         parent::__construct();
 
-        $this->setId('reportsGrid');
+        $this->setId('manageReports');
         $this->setDefaultSort('report_id');
         $this->setDefaultDir('ASC');
         $this->setSaveParametersInSession(true);
